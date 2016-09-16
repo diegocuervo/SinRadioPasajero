@@ -13,8 +13,8 @@
 
     <ImageView
         android:id="@+id/imgProfilePic"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:src="@android:drawable/sym_def_app_icon" />
 
