@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "219271296242",
+    "project_id": "login-sinradio"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219271296242:android:021f49b5c4c5c9e7",
+        "android_client_info": {
+          "package_name": "com.example.diegocuervo.sinradio_pasajero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219271296242-o3o1o2fl1nft3hgguthttfb5qog2p1h2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.diegocuervo.sinradio_pasajero",
+            "certificate_hash": "E43D186BE6BBCD79F96B4A83DFD5472C44F616AE"
+          }
+        },
+        {
+          "client_id": "219271296242-fup5roubgcfs0mamotu1p62asjoaquun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUj5up4EbIRGEz9B91bBARS5je5X7BaPc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
