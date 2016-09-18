@@ -1,5 +1,7 @@
 package com.example.diegocuervo.sinradio_pasajero;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -7,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -26,6 +29,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.login.widget.ProfilePictureView;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -33,12 +42,17 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.PrivateKey;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
+        GoogleApiClient.OnConnectionFailedListener {
     ImageView imgProfilePic;
      TextView nombre;
-     TextView mail;
+    Activity actividad;
+      GoogleApiClient mGoogleApiClient;
+
+    TextView mail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +64,16 @@ public class MainActivity extends AppCompatActivity
         String foto = inBundle.get("foto").toString();
        String email = inBundle.get("email").toString();
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        this.actividad=this;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
@@ -100,7 +123,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            return true;
+
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            // ...
+                            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(getApplicationContext(), ValidacionPasajero.class);
+                            startActivity(i);
+                        }
+                    });
         }
         return super.onOptionsItemSelected(item);
     }
@@ -127,6 +160,13 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onClick(View view) {
 
+    }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

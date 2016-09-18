@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Base64;
@@ -128,7 +129,7 @@ public class ValidacionPasajero extends AppCompatActivity implements
     }
 
 
-    private void signOut() {
+    public void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
@@ -183,6 +184,8 @@ public class ValidacionPasajero extends AppCompatActivity implements
             intent.putExtra("email", email);
             intent.putExtra("nombre", personName);
             intent.putExtra("foto", personPhotoUrl);
+
+
             startActivity(intent);
 
         } else {
