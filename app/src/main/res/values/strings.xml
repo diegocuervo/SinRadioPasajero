@@ -13,5 +13,14 @@
         <string name="btn_logout_from_google">Logout from Google</string>
         <string name="btn_revoke_access">Revoke Access</string>
     <string name="loading">Cargando, espere por favor</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="texto">Listado de Viajes del Dia</string>
+    <string name="posicion_actual">Posición Actual:</string>
+    <string name="activar">Activar</string>
+    <string name="desactivar">Desactivar</string>
+    <string name="estado_proveedor">Estado proveedor:</string>
+    <string name="btn_download">Descargar Imagen</string>
+    <string name="img_descrip">Descripción de la Imagen</string>
 
 </resources>

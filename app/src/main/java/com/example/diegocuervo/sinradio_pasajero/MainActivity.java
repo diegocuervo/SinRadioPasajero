@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
@@ -82,11 +85,15 @@ public class MainActivity extends AppCompatActivity
         imgProfilePic = (ImageView) header.findViewById(R.id.imgProfilePic);
         mail.setText(email);
         nombre.setText(name);
+
         Glide.with(getApplicationContext()).load(foto)
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfilePic);
+
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -129,7 +136,7 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void onResult(Status status) {
                             // ...
-                            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"Sesion Cerrada",Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(getApplicationContext(), ValidacionPasajero.class);
                             startActivity(i);
                         }
@@ -169,4 +176,5 @@ public class MainActivity extends AppCompatActivity
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
 }
