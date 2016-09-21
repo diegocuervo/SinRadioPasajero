@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Array con los valores de la cabecera de la tabla-->
+    <string-array name="cabecera_tabla">
+        <item>ID Viaje</item>
+        <item>ID Cliente</item>
+        <item>Origen</item>
+        <item>Destino</item>
+        <item>Monto</item>
+    </string-array>
+</resources>
