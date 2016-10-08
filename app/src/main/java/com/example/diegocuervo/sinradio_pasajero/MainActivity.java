@@ -1,6 +1,8 @@
 package com.example.diegocuervo.sinradio_pasajero;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +17,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -31,7 +34,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.facebook.login.widget.ProfilePictureView;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -150,17 +153,22 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Fragment fragment = null;
+        FragmentManager fragmentManager = getFragmentManager();
         if (id == R.id.listado_viajes) {
-            // Handle the camera action
+            fragment = new Listado_viajes();
         } else if (id == R.id.pedir_taxi) {
+
+            fragment = new Pedir_taxi();
 
         } else if (id == R.id.salir) {
 
                 moveTaskToBack(true);
 
         }
-
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment,fragment)
+                .commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
