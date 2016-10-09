@@ -7,7 +7,14 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="440dp" />
+    <Button
+        android:id="@+id/btnAddTitle"
 
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Enviar Posicion"
+
+        android:layout_margin="10dp"></Button>
 
 </LinearLayout>
