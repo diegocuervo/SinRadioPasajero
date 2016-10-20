@@ -9,12 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="440dp" />
     <Button
-        android:id="@+id/btnAddTitle"
+        android:id="@+id/btnpedir_taxi"
 
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="Enviar Posicion"
 
-        android:layout_margin="10dp"></Button>
+        android:layout_margin="10dp"
+        android:onClick="btnPedir_taxi"></Button>
+    <Button
+        android:id="@+id/btnPedir_taxi_manual"
 
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="Indicar Direccion Manualmente"
+        android:layout_marginLeft="175dp"
+        android:layout_marginTop="-60dp"
+        android:onClick="btnPedir_taxi_manual"></Button>
 </LinearLayout>
