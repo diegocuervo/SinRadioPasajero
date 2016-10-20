@@ -177,8 +177,43 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
                             public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(getActivity(),"En breve le notificaremos la llegada del Chofer a "+editText.getText(),Toast.LENGTH_LONG).show();
+
+                                Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
+                                try
+                                {
+                                    List<Address> addresses = geoCoder.getFromLocationName(editText.getText().toString(), 1);
+                                    if (addresses.size() > 0)
+                                    {
+
+                                               Double lat= addresses.get(0).getLatitude();
+                                        Double lon = addresses.get(0).getLongitude();
+                                        LatLng latLng = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+
+                                        MarkerOptions markerOption = new MarkerOptions();
+                                        markerOption.position(latLng);
+                                        markerOption.title(editText.getText().toString());
+                                        googleMap.clear();
+                                        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                                        googleMap.addMarker(markerOption);
+                                        Log.d("Latitude", ""+lat);
+                                        Log.d("Longitude", ""+lon);
+                                    }
+                                }
+                                catch(Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+
+
+
+
+
+
+
+                       // Toast.makeText(getActivity(),"En breve le notificaremos la llegada del Chofer a "+editText.getText().toString(),Toast.LENGTH_LONG).show();
                             }
                         })
         .setNegativeButton("Cancel",

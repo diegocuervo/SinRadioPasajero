@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         String name = inBundle.get("nombre").toString();
         String foto = inBundle.get("foto").toString();
        String email = inBundle.get("email").toString();
-
+     //   startService(new Intent(MyFirebaseMessagingService.class.getName()));
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         mail.setText(email);
         nombre.setText(name);
 
-        Glide.with(getApplicationContext()).load(foto)
+       Glide.with(getApplicationContext()).load(foto)
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
