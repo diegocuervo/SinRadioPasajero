@@ -130,7 +130,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         });
 
         try {
-            Location myLocation  = googleMap.getMyLocation();
+            /*Location myLocation  = googleMap.getMyLocation();
             LatLng latlon = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latlon);
@@ -140,7 +140,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
             direccionesActual = geoco.getFromLocation(latlon.latitude, latlon.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
 
-            
+
             String address = direccionesActual.get(0).getAddressLine(0);
             String posactual =address;
             Log.w("direccion", address);
@@ -153,7 +153,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         } catch (IOException e) {
             e.printStackTrace();
             Log.w("direccion", "cayo en la excepcion");
-        }
+        }*/
 
 
 
