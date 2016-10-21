@@ -130,13 +130,12 @@ private class MyHttpPostRequest extends AsyncTask<String, Integer, String> {
             Integer cantidad = array.length();
             Integer k=0;
             Tabla tabla = new Tabla(actividad, (TableLayout) findViewById(R.id.tabla));
-            tabla.agregarCabecera(R.array.cabecera_tabla);
+            tabla.agregarCabecera();
             while(k<cantidad){
             JSONObject jsonObject = array.getJSONObject(k);
 
 
-            //   Log.w(APP_TAG,"Anduvo el parseo puto? " + jsonObject.getString("apellido"));
-            // Toast.makeText(actividad, jsonObject.getString("apellido"), Toast.LENGTH_SHORT).show();
+
 
             Log.w(APP_TAG, "Resultado obtenido " + result);
 

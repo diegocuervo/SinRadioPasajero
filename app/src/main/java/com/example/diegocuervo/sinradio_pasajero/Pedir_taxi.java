@@ -86,12 +86,6 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
         mMapView.onResume(); // needed to get the map to display immediately
 
-        try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
@@ -128,12 +122,46 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                         }
                     }
                 });
-                // For showing a move to my location button
+
                 googleMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setZoomControlsEnabled(true);
 
             }
         });
+
+        try {
+            Location myLocation  = googleMap.getMyLocation();
+            LatLng latlon = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latlon);
+            Geocoder geoco = new Geocoder(getActivity(), Locale.getDefault());
+            List<Address> direccionesActual;
+
+            direccionesActual = geoco.getFromLocation(latlon.latitude, latlon.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+            String address = direccionesActual.get(0).getAddressLine(0);
+            String posactual =address;
+            Log.w("direccion", address);
+            direccion =address;
+            Log.w("direccion", String.valueOf(latlon.longitude));
+            markerOptions.title(posactual);
+            googleMap.clear();
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latlon));
+            googleMap.addMarker(markerOptions);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.w("direccion", "cayo en la excepcion");
+        }
+
+
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
 
         return rootView;
     }
@@ -186,7 +214,11 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                                     List<Address> addresses = geoCoder.getFromLocationName(editText.getText().toString(), 1);
                                     if (addresses.size() > 0)
                                     {
+                                        String ciudad = addresses.get(0).getAdminArea();
+                                                String provincia =addresses.get(0).getLocality();
 
+
+                                        if(ciudad.equals("Ciudad Autónoma de Buenos Aires") && provincia.equals("Buenos Aires")){
                                                Double lat= addresses.get(0).getLatitude();
                                         Double lon = addresses.get(0).getLongitude();
                                         LatLng latLng = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
@@ -200,20 +232,19 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                                         Log.d("Latitude", ""+lat);
                                         Log.d("Longitude", ""+lon);
                                     }
+                                        else{
+                                            Toast.makeText(getActivity(),"La direccion ingresada no se encuentra dentro de la Ciudad Autonoma de Buenos Aires",Toast.LENGTH_LONG).show();
+                                        }
                                 }
+                                    else{
+                                        Toast.makeText(getActivity(),"La direccion ingresada no es Valida",Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
                                 catch(Exception e)
                                 {
                                     e.printStackTrace();
                                 }
-
-
-
-
-
-
-
-
-                       // Toast.makeText(getActivity(),"En breve le notificaremos la llegada del Chofer a "+editText.getText().toString(),Toast.LENGTH_LONG).show();
                             }
                         })
         .setNegativeButton("Cancel",

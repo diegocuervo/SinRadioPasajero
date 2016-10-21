@@ -58,13 +58,13 @@ public class Tabla {
     }
 
 
-    public void agregarCabecera(int recursocabecera) {
+    public void agregarCabecera() {
         TableRow.LayoutParams layoutCelda;
         TableRow fila = new TableRow(actividad);
         TableRow.LayoutParams layoutFila = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         fila.setLayoutParams(layoutFila);
 
-        String[] arraycabecera = rs.getStringArray(recursocabecera);
+        String[] arraycabecera = rs.getStringArray(R.array.cabecera_tabla);
         COLUMNAS = arraycabecera.length;
 
         for (int i = 0; i < arraycabecera.length; i++) {
