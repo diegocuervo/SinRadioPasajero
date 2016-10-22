@@ -1,5 +1,6 @@
 package com.example.diegocuervo.sinradio_pasajero;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -10,6 +11,7 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -51,13 +53,13 @@ import java.util.Locale;
 public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
     MapView mMapView;
     private GoogleMap googleMap;
-    private Marker marker;
-    public Button res1, res2;
+
     String direccion;
     public Pedir_taxi() {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.pedir_taxi, container, false);
 
@@ -129,17 +131,25 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
             }
         });
 
+
+
         try {
-            /*Location myLocation  = googleMap.getMyLocation();
-            LatLng latlon = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+            LocationManager locationManager = (LocationManager)
+                    getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            Location location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, false));
+
+
+            LatLng latlon = new LatLng(location.getLatitude(),location.getLongitude());
+            Log.w("direccion", "cayo en al escepcion"+location.getLatitude());
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latlon);
             Geocoder geoco = new Geocoder(getActivity(), Locale.getDefault());
             List<Address> direccionesActual;
 
             direccionesActual = geoco.getFromLocation(latlon.latitude, latlon.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
-
 
             String address = direccionesActual.get(0).getAddressLine(0);
             String posactual =address;
@@ -150,19 +160,9 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
             googleMap.clear();
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latlon));
             googleMap.addMarker(markerOptions);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.w("direccion", "cayo en la excepcion");
-        }*/
-
-
-
-        try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
-
         } catch (Exception e) {
             e.printStackTrace();
-
+            Log.w("direccion", "cayo en al escepcion"+direccion);
         }
 
         return rootView;
@@ -194,7 +194,6 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
     }
     protected void showInputDialogManual() {
 
-        // get prompts.xml view
 
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View promptView = layoutInflater.inflate(R.layout.ingreso_manual, null);
@@ -204,7 +203,6 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         final TextView textView = (TextView) promptView.findViewById(R.id.textView);
         final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
         textView.setText("Ingrese la direccion donde desea esperar al taxi");
-        // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
@@ -249,7 +247,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                                 }
                             }
                         })
-        .setNegativeButton("Cancel",
+        .setNegativeButton("Cancelar",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
@@ -271,8 +269,10 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         alertDialogBuilder.setView(promptView);
 
         final TextView textView = (TextView) promptView.findViewById(R.id.textView);
+        final TextView textView_observaciones = (TextView) promptView.findViewById(R.id.textView_observaciones);
         final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
         textView.setText("Estas seguro que desea esperar el taxi en:"+destino);
+        textView_observaciones.setText("Desea agregar alguna observasion(timbre, piso, N° departamento) ?");
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
@@ -280,7 +280,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                         Toast.makeText(getActivity(),"En breve le notificaremos la llegada del Chofer a "+direccion,Toast.LENGTH_LONG).show();
                     }
                 })
-                .setNegativeButton("Cancel",
+                .setNegativeButton("Cancelar",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
@@ -296,10 +296,5 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
 
     }
-
-
-
-
-
 
 }
