@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -41,14 +42,27 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.PrivateKey;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
@@ -63,6 +77,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),Settings.Secure.ANDROID_ID);
+        String baseUrl = "http://API.SIN-RADIO.COM.AR/cliente/token/"+android_id;
+        new MyHttpPostRequestToken().execute(baseUrl);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Bundle inBundle = getIntent().getExtras();
@@ -182,6 +199,81 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    private class MyHttpPostRequestToken extends AsyncTask<String, Integer, String> {
+
+        public String APP_TAG = "token_envio";
+        protected String doInBackground(String... params) {
+            BufferedReader in = null;
+            String baseUrl = params[0];
+
+
+
+
+            try {
+
+                //Creamos un objeto Cliente HTTP para manejar la peticion al servidor
+                HttpClient httpClient = new DefaultHttpClient();
+                //Creamos objeto para armar peticion de tipo HTTP POST
+                HttpPost post = new HttpPost(baseUrl);
+
+                //Configuramos los parametos que vaos a enviar con la peticion HTTP POST
+                List<NameValuePair> nvp = new ArrayList<NameValuePair>(1);
+                nvp.add(new BasicNameValuePair("token", FirebaseInstanceId.getInstance().getToken()));
+                Log.w(APP_TAG, FirebaseInstanceId.getInstance().getToken());
+
+                // post.setHeader("Content-type", "application/json");
+                post.setEntity(new UrlEncodedFormEntity(nvp,"UTF-8"));
+
+                //Se ejecuta el envio de la peticion y se espera la respuesta de la misma.
+                HttpResponse response = httpClient.execute(post);
+                Log.w(APP_TAG, response.getStatusLine().toString());
+                int resCode = response.getStatusLine().getStatusCode();
+
+                if(resCode==404 || resCode==410){
+
+                    Toast.makeText(actividad, "Problemas con la coneccion. Pruebe mas tarde.", Toast.LENGTH_SHORT).show();
+                }
+                //Obtengo el contenido de la respuesta en formato InputStream Buffer y la paso a formato String
+                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer sb = new StringBuffer("");
+                String line = "";
+                String NL = System.getProperty("line.separator");
+                while ((line = in.readLine()) != null) {
+                    sb.append(line + NL);
+                }
+                in.close();
+                return sb.toString();
+
+            } catch (Exception e) {
+                return "Comienze a moverse para reportar posicion" + e.getMessage();
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+            //Se obtiene el progreso de la peticion
+            Log.w(APP_TAG,"Indicador de pregreso " + progress[0].toString());
+        }
+
+        protected void onPostExecute(String result) {
+            //Se obtiene el resultado de la peticion Asincrona
+            Log.w(APP_TAG,"Resultado obtenido " + result);
+
+
+            Toast.makeText(actividad, result, Toast.LENGTH_SHORT).show();
+
+
+        }
 
     }
 

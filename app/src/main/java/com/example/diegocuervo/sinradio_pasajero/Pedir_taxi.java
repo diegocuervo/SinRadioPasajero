@@ -14,6 +14,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 
 import android.support.v4.app.FragmentActivity;
@@ -132,9 +133,10 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         });
 
 
-
+/*
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
+
             LocationManager locationManager = (LocationManager)
                     getActivity().getSystemService(Context.LOCATION_SERVICE);
             Criteria criteria = new Criteria();
@@ -164,7 +166,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
             Log.w("direccion", "cayo en al escepcion"+direccion);
         }
-
+*/
         return rootView;
     }
 
@@ -271,8 +273,8 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         final TextView textView = (TextView) promptView.findViewById(R.id.textView);
         final TextView textView_observaciones = (TextView) promptView.findViewById(R.id.textView_observaciones);
         final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
-        textView.setText("Estas seguro que desea esperar el taxi en:"+destino);
-        textView_observaciones.setText("Desea agregar alguna observasion(timbre, piso, N° departamento) ?");
+        textView.setText("El taxi sera enviado a: "+destino);
+        textView_observaciones.setText("Desea agregar alguna observacion(timbre, piso, N° departamento) ?");
         // setup a dialog window
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
