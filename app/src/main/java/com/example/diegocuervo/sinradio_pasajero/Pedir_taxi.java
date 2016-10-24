@@ -11,6 +11,7 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -43,8 +44,22 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,7 +69,8 @@ import java.util.Locale;
 public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
     MapView mMapView;
     private GoogleMap googleMap;
-
+    Double latitud;
+    Double longitud;
     String direccion;
     public Pedir_taxi() {
 
@@ -80,7 +96,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v)
             {
-                showInputDialogConfirmacion(2,direccion);
+                showInputDialogConfirmacion(direccion);
 
             }
         });
@@ -107,6 +123,8 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
                             String address = addresses.get(0).getAddressLine(0);
                             direccion =address;
+                            latitud=arg0.latitude;
+                            longitud = arg0.longitude;
                             String city = addresses.get(0).getLocality();
                             String state = addresses.get(0).getAdminArea();
                             String country = addresses.get(0).getCountryName();
@@ -133,7 +151,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         });
 
 
-/*
+
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
 
@@ -166,7 +184,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
             e.printStackTrace();
             Log.w("direccion", "cayo en al escepcion"+direccion);
         }
-*/
+
         return rootView;
     }
 
@@ -261,7 +279,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
-    protected void showInputDialogConfirmacion(final int id_fila,final String destino) {
+    protected void showInputDialogConfirmacion(final String destino) {
 
         // get prompts.xml view
 
@@ -279,6 +297,28 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+
+                        JSONObject jsonObject= new JSONObject();
+                        String email = Cliente_Singleton.getInstance().email;
+
+                        try {
+                            jsonObject.put("dir",destino );
+                            jsonObject.put("lat",latitud );
+                            jsonObject.put("lon",longitud );
+                            jsonObject.put("mail",email );
+                            jsonObject.put("detalle",editText );
+                        }
+
+                        catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+
+                        }
+                        String data =  jsonObject.toString();
+                        String baseUrl = "http://API.SIN-RADIO.COM.AR/cliente/token/";
+
+
+                        new MyHttpPostRequestDireccion().execute(baseUrl,data);
                         Toast.makeText(getActivity(),"En breve le notificaremos la llegada del Chofer a "+direccion,Toast.LENGTH_LONG).show();
                     }
                 })
@@ -298,5 +338,82 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
 
     }
+    private class MyHttpPostRequestDireccion extends AsyncTask<String, Integer, String> {
 
+        public String APP_TAG = "direccion_envio";
+        protected String doInBackground(String... params) {
+            BufferedReader in = null;
+            String baseUrl = params[0];
+            String jsonData = params[1];
+
+
+
+            try {
+                JSONObject obj = new JSONObject(jsonData);
+                //Creamos un objeto Cliente HTTP para manejar la peticion al servidor
+                HttpClient httpClient = new DefaultHttpClient();
+                //Creamos objeto para armar peticion de tipo HTTP POST
+                HttpPost post = new HttpPost(baseUrl);
+
+                //Configuramos los parametos que vaos a enviar con la peticion HTTP POST
+                List<NameValuePair> nvp = new ArrayList<NameValuePair>(5);
+                nvp.add(new BasicNameValuePair("dir", obj.getString("dir")));
+                nvp.add(new BasicNameValuePair("lat", obj.getString("lat")));
+                nvp.add(new BasicNameValuePair("lon", obj.getString("lon")));
+                nvp.add(new BasicNameValuePair("detalle", obj.getString("detalle")));
+                nvp.add(new BasicNameValuePair("mail", obj.getString("mail")));
+
+
+                // post.setHeader("Content-type", "application/json");
+                post.setEntity(new UrlEncodedFormEntity(nvp,"UTF-8"));
+
+                //Se ejecuta el envio de la peticion y se espera la respuesta de la misma.
+                HttpResponse response = httpClient.execute(post);
+                Log.w(APP_TAG, response.getStatusLine().toString());
+                int resCode = response.getStatusLine().getStatusCode();
+
+                if(resCode==404 || resCode==410){
+
+                    Toast.makeText(getContext(), "Problemas con la coneccion. Pruebe mas tarde.", Toast.LENGTH_SHORT).show();
+                }
+                //Obtengo el contenido de la respuesta en formato InputStream Buffer y la paso a formato String
+                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer sb = new StringBuffer("");
+                String line = "";
+                String NL = System.getProperty("line.separator");
+                while ((line = in.readLine()) != null) {
+                    sb.append(line + NL);
+                }
+                in.close();
+                return sb.toString();
+
+            } catch (Exception e) {
+                return "Comienze a moverse para reportar posicion" + e.getMessage();
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+            //Se obtiene el progreso de la peticion
+            Log.w(APP_TAG,"Indicador de pregreso " + progress[0].toString());
+        }
+
+        protected void onPostExecute(String result) {
+            //Se obtiene el resultado de la peticion Asincrona
+            Log.w(APP_TAG,"Resultado obtenido " + result);
+
+
+            Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
+
+
+        }
+
+    }
 }

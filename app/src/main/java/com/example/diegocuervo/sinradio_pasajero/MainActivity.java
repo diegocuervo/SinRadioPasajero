@@ -71,21 +71,23 @@ public class MainActivity extends AppCompatActivity
      TextView nombre;
     Activity actividad;
       GoogleApiClient mGoogleApiClient;
-
+String email;
     TextView mail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),Settings.Secure.ANDROID_ID);
-        String baseUrl = "http://API.SIN-RADIO.COM.AR/cliente/token/"+android_id;
-        new MyHttpPostRequestToken().execute(baseUrl);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Bundle inBundle = getIntent().getExtras();
         String name = inBundle.get("nombre").toString();
         String foto = inBundle.get("foto").toString();
-       String email = inBundle.get("email").toString();
+        email = inBundle.get("email").toString();
+
+        String baseUrl = "http://API.SIN-RADIO.COM.AR/cliente/token/"+android_id;
+        new MyHttpPostRequestToken().execute(baseUrl);
      //   startService(new Intent(MyFirebaseMessagingService.class.getName()));
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity
                 .build();
 
         this.actividad=this;
+        Cliente_Singleton.getInstance().email=email;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
@@ -220,9 +223,10 @@ public class MainActivity extends AppCompatActivity
                 HttpPost post = new HttpPost(baseUrl);
 
                 //Configuramos los parametos que vaos a enviar con la peticion HTTP POST
-                List<NameValuePair> nvp = new ArrayList<NameValuePair>(1);
+                List<NameValuePair> nvp = new ArrayList<NameValuePair>(2);
                 nvp.add(new BasicNameValuePair("token", FirebaseInstanceId.getInstance().getToken()));
-                Log.w(APP_TAG, FirebaseInstanceId.getInstance().getToken());
+                nvp.add(new BasicNameValuePair("email", email));
+                Log.w(APP_TAG, FirebaseInstanceId.getInstance().getToken()+email);
 
                 // post.setHeader("Content-type", "application/json");
                 post.setEntity(new UrlEncodedFormEntity(nvp,"UTF-8"));
