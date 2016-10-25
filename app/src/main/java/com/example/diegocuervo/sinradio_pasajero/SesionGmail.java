@@ -17,7 +17,7 @@ public class SesionGmail  extends AppCompatActivity implements View.OnClickListe
         GoogleApiClient.OnConnectionFailedListener {
 
  public GoogleApiClient mGoogleApiClient;
-    public GoogleSignInOptions gso;
+  
 protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         GoogleSignInOptions gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

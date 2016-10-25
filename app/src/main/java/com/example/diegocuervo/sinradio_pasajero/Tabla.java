@@ -64,7 +64,7 @@ public class Tabla {
         TableRow.LayoutParams layoutFila = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         fila.setLayoutParams(layoutFila);
 
-        String[] arraycabecera = rs.getStringArray(R.array.cabecera_tabla);
+        String[] arraycabecera = rs.getStringArray(R.array.cab_tab);
         COLUMNAS = arraycabecera.length;
 
         for (int i = 0; i < arraycabecera.length; i++) {
@@ -85,11 +85,6 @@ public class Tabla {
         FILAS++;
     }
 
-    /**
-     * Agrega una fila a la tabla
-     *
-     * @param elementos Elementos de la fila
-     */
     public void agregarFilaTabla(ArrayList<String> elementos) {
         TableRow.LayoutParams layoutCelda;
         TableRow.LayoutParams layoutFila = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -101,12 +96,7 @@ public class Tabla {
         fila.setId(Integer.parseInt(elementos.get(0)));
         fila.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.setBackgroundColor(Color.GRAY);
-                System.out.println("Row clicked: " + v.getId());
-                 TextView destino = (TextView)fila.getChildAt(3);
-                String destino_viaje= destino.getText().toString();
 
-                showInputDialog(v.getId(),destino_viaje);
 
 
             }
@@ -145,62 +135,6 @@ public class Tabla {
     }
 
 
-    protected void showInputDialog(final int id_fila,final String destino) {
-
-        // get prompts.xml view
-
-        LayoutInflater layoutInflater = LayoutInflater.from(actividad);
-        View promptView = layoutInflater.inflate(R.layout.monto, null);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(actividad);
-        alertDialogBuilder.setView(promptView);
-
-        final TextView textView = (TextView) promptView.findViewById(R.id.textView);
-        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
-        textView.setText("Ingrese el Monto para el viaje con ID "+id_fila+" con destino "+destino);
-        // setup a dialog window
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                                Toast.makeText(actividad, "El Monto ingresado es " + editText.getText(), Toast.LENGTH_LONG).show();
-                            //Aca le aviso a la API central el monto del viaje, le mando el monto recien cargado y el ID viaje.
-
-                        String strJson =(editText.getText().toString());
-                        JSONObject jsonObject= new JSONObject();
-
-
-                        try {
-                            jsonObject.put("id_viaje", destino);
-                            jsonObject.put("monto", strJson);
-                         jsonObject.put("evento", "ingresoMonto");
-                        }
-
-                        catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-
-                        }
-                        String data =  jsonObject.toString();
-
-                        //Se define la URL del servidor a la cual se enviarán lso datos
-                        String baseUrl = "http://sinradio.ddns.net:45507/";
-
-                        new MyHttpPostRequest().execute(baseUrl, data);
-
-
-                    }
-                })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-        // create an alert dialog
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
 
 
 
@@ -264,7 +198,7 @@ private class MyHttpPostRequest extends AsyncTask<String, Integer, String> {
     }
 
     protected void onPostExecute(String result) {
-        //Se obtiene el resultado de la peticion Asincrona
+
         Log.w(APP_TAG,"Resultado obtenido " + result);
         try {
            JSONArray array = new JSONArray(result);

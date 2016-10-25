@@ -65,20 +65,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
-        GoogleApiClient.OnConnectionFailedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     ImageView imgProfilePic;
-     TextView nombre;
+    TextView nombre;
     Activity actividad;
-      GoogleApiClient mGoogleApiClient;
-String email;
+    GoogleApiClient mGoogleApiClient;
+    String email;
     TextView mail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),Settings.Secure.ANDROID_ID);
-
+        Log.w("asdasd", android_id);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Bundle inBundle = getIntent().getExtras();
@@ -109,7 +108,7 @@ String email;
         mail.setText(email);
         nombre.setText(name);
 
-        
+
 
         if(foto!=null) {
             Glide.with(getApplicationContext()).load(foto)
@@ -143,16 +142,13 @@ String email;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
@@ -161,7 +157,7 @@ String email;
                     new ResultCallback<Status>() {
                         @Override
                         public void onResult(Status status) {
-                            // ...
+
                             Toast.makeText(getApplicationContext(),"Sesion Cerrada",Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(getApplicationContext(), ValidacionPasajero.class);
                             startActivity(i);
@@ -174,7 +170,6 @@ String email;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment fragment = null;
         FragmentManager fragmentManager = getFragmentManager();
@@ -216,25 +211,19 @@ String email;
             String baseUrl = params[0];
 
 
-
-
             try {
 
-                //Creamos un objeto Cliente HTTP para manejar la peticion al servidor
                 HttpClient httpClient = new DefaultHttpClient();
-                //Creamos objeto para armar peticion de tipo HTTP POST
+
                 HttpPost post = new HttpPost(baseUrl);
 
-                //Configuramos los parametos que vaos a enviar con la peticion HTTP POST
                 List<NameValuePair> nvp = new ArrayList<NameValuePair>(2);
                 nvp.add(new BasicNameValuePair("token", FirebaseInstanceId.getInstance().getToken()));
                 nvp.add(new BasicNameValuePair("email", email));
                 Log.w(APP_TAG, FirebaseInstanceId.getInstance().getToken()+email);
 
-                // post.setHeader("Content-type", "application/json");
                 post.setEntity(new UrlEncodedFormEntity(nvp,"UTF-8"));
 
-                //Se ejecuta el envio de la peticion y se espera la respuesta de la misma.
                 HttpResponse response = httpClient.execute(post);
                 Log.w(APP_TAG, response.getStatusLine().toString());
                 int resCode = response.getStatusLine().getStatusCode();
@@ -243,7 +232,6 @@ String email;
 
                  //   Toast.makeText(actividad, "Problemas con la coneccion. Pruebe mas tarde.", Toast.LENGTH_SHORT).show();
                 }
-                //Obtengo el contenido de la respuesta en formato InputStream Buffer y la paso a formato String
                 in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer sb = new StringBuffer("");
                 String line = "";
@@ -268,16 +256,13 @@ String email;
         }
 
         protected void onProgressUpdate(Integer... progress) {
-            //Se obtiene el progreso de la peticion
             Log.w(APP_TAG,"Indicador de pregreso " + progress[0].toString());
         }
 
         protected void onPostExecute(String result) {
-            //Se obtiene el resultado de la peticion Asincrona
+
             Log.w(APP_TAG,"Resultado obtenido token mail" + result);
 
-
-           // Toast.makeText(actividad, result, Toast.LENGTH_SHORT).show();
 
 
         }

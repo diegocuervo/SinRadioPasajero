@@ -34,7 +34,7 @@ public class Listado_viajes extends Fragment {
 
 View vista;
     public Listado_viajes() {
-        // Required empty public constructor
+
     }
 
 
@@ -50,7 +50,7 @@ View vista;
 
     private class MyHttpGetRequest extends AsyncTask<String, Integer, String> {
 
-        private String APP_TAG= "SinRadio-appChofer";
+        private String APP_TAG= "Pido_Viajes";
         protected String doInBackground(String... params) {
             BufferedReader in = null;
             String baseUrl = params[0];
@@ -107,7 +107,7 @@ View vista;
                Log.w(APP_TAG, "Resultado obtenido " + result + cantidad);
                 Integer k=0;
                 Tabla tabla = new Tabla(getActivity(), (TableLayout) vista.findViewById(R.id.tabla));
-               // tabla.agregarCabecera(R.array.cabecera_tabla);
+               tabla.agregarCabecera();
 
                while(k<cantidad){
                    JSONObject jsonObject = array.getJSONObject(k);
