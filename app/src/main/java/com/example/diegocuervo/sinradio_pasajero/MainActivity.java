@@ -109,6 +109,7 @@ String email;
         mail.setText(email);
         nombre.setText(name);
 
+        
 
         if(foto!=null) {
             Glide.with(getApplicationContext()).load(foto)
