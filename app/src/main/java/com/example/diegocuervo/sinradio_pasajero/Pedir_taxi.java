@@ -121,23 +121,26 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                             addresses = geocoder.getFromLocation(arg0.latitude, arg0.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
 
-                            String address = addresses.get(0).getAddressLine(0);
-                            direccion =address;
-                            latitud=arg0.latitude;
-                            longitud = arg0.longitude;
+
                             String city = addresses.get(0).getLocality();
                             String state = addresses.get(0).getAdminArea();
-                            String country = addresses.get(0).getCountryName();
-                            String postalCode = addresses.get(0).getPostalCode();
-                            String knownName = addresses.get(0).getFeatureName();
-                            Log.w("direccion", address);
-                            MarkerOptions markerOptions = new MarkerOptions();
-                            markerOptions.position(arg0);
-                            markerOptions.title(address);
-                            googleMap.clear();
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLng(arg0));
-                            googleMap.addMarker(markerOptions);
 
+                            if(state.equals("Ciudad Autónoma de Buenos Aires") && city.equals("Buenos Aires")) {
+                                String address = addresses.get(0).getAddressLine(0);
+                                direccion =address;
+                                latitud=arg0.latitude;
+                                longitud = arg0.longitude;
+                                Log.w("direccion", address);
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                markerOptions.position(arg0);
+                                markerOptions.title(address);
+                                googleMap.clear();
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLng(arg0));
+                                googleMap.addMarker(markerOptions);
+                            }
+                            else {
+                                Toast.makeText(getActivity(),"La direccion elegida no pertenece a la Ciudad Autonoma de Buenos Aires",Toast.LENGTH_LONG).show();
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -290,7 +293,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
         final TextView textView = (TextView) promptView.findViewById(R.id.textView);
         final TextView textView_observaciones = (TextView) promptView.findViewById(R.id.textView_observaciones);
-        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        final EditText editText = (EditText) promptView.findViewById(R.id.editText_observacion);
         textView.setText("El taxi sera enviado a: "+destino);
         textView_observaciones.setText("Desea agregar alguna observacion(timbre, piso, N° departamento) ?");
         // setup a dialog window
@@ -300,13 +303,13 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
                         JSONObject jsonObject= new JSONObject();
                         String email = Cliente_Singleton.getInstance().email;
-
+                        Log.w("valordeatelle", editText.toString());
                         try {
                             jsonObject.put("dir",destino );
                             jsonObject.put("lat",latitud );
                             jsonObject.put("lon",longitud );
                             jsonObject.put("mail",email );
-                            jsonObject.put("detalle",editText );
+                            jsonObject.put("detalle",editText.toString() );
                         }
 
                         catch (JSONException e) {
@@ -315,7 +318,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
                         }
                         String data =  jsonObject.toString();
-                        String baseUrl = "http://API.SIN-RADIO.COM.AR/cliente/token/";
+                        String baseUrl = "http://API.SIN-RADIO.COM.AR/cliente/viajes/";
 
 
                         new MyHttpPostRequestDireccion().execute(baseUrl,data);
@@ -374,7 +377,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
                 if(resCode==404 || resCode==410){
 
-                    Toast.makeText(getContext(), "Problemas con la coneccion. Pruebe mas tarde.", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getContext(), "Problemas con la coneccion. Pruebe mas tarde.", Toast.LENGTH_SHORT).show();
                 }
                 //Obtengo el contenido de la respuesta en formato InputStream Buffer y la paso a formato String
                 in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -410,7 +413,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
             Log.w(APP_TAG,"Resultado obtenido " + result);
 
 
-            Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
 
 
         }

@@ -109,12 +109,14 @@ String email;
         mail.setText(email);
         nombre.setText(name);
 
-       Glide.with(getApplicationContext()).load(foto)
-                .thumbnail(0.5f)
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgProfilePic);
 
+        if(foto!=null) {
+            Glide.with(getApplicationContext()).load(foto)
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgProfilePic);
+        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -238,7 +240,7 @@ String email;
 
                 if(resCode==404 || resCode==410){
 
-                    Toast.makeText(actividad, "Problemas con la coneccion. Pruebe mas tarde.", Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(actividad, "Problemas con la coneccion. Pruebe mas tarde.", Toast.LENGTH_SHORT).show();
                 }
                 //Obtengo el contenido de la respuesta en formato InputStream Buffer y la paso a formato String
                 in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
@@ -252,7 +254,7 @@ String email;
                 return sb.toString();
 
             } catch (Exception e) {
-                return "Comienze a moverse para reportar posicion" + e.getMessage();
+                return "error" + e.getMessage();
             } finally {
                 if (in != null) {
                     try {
@@ -271,10 +273,10 @@ String email;
 
         protected void onPostExecute(String result) {
             //Se obtiene el resultado de la peticion Asincrona
-            Log.w(APP_TAG,"Resultado obtenido " + result);
+            Log.w(APP_TAG,"Resultado obtenido token mail" + result);
 
 
-            Toast.makeText(actividad, result, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(actividad, result, Toast.LENGTH_SHORT).show();
 
 
         }
