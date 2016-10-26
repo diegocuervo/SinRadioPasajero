@@ -41,7 +41,7 @@ View vista;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        String baseUrl = "http://api.sin-radio.com.ar/viaje";
+        String baseUrl = "http://api.sin-radio.com.ar/cliente/viajes";
         new MyHttpGetRequest().execute(baseUrl);
         View rootView = inflater.inflate(R.layout.listado_viajes, container, false);
         vista = rootView;

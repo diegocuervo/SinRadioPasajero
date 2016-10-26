@@ -103,7 +103,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
-        mMapView.onResume(); // needed to get the map to display immediately
+        mMapView.onResume();
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -284,8 +284,6 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
     }
     protected void showInputDialogConfirmacion(final String destino) {
 
-        // get prompts.xml view
-
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View promptView = layoutInflater.inflate(R.layout.confirma_envio, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
@@ -296,7 +294,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         final EditText editText = (EditText) promptView.findViewById(R.id.editText_observacion);
         textView.setText("El taxi sera enviado a: "+destino);
         textView_observaciones.setText("Desea agregar alguna observacion(timbre, piso, N° departamento) ?");
-        // setup a dialog window
+
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -313,12 +311,12 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                         }
 
                         catch (JSONException e) {
-                            // TODO Auto-generated catch block
+
                             e.printStackTrace();
 
                         }
                         String data =  jsonObject.toString();
-                        String baseUrl = "http://API.SIN-RADIO.COM.AR/cliente/viajes/";
+                        String baseUrl = "http://API.SIN-RADIO.COM.AR/viaje/";
 
 
                         new MyHttpPostRequestDireccion().execute(baseUrl,data);
@@ -353,12 +351,12 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
             try {
                 JSONObject obj = new JSONObject(jsonData);
-                //Creamos un objeto Cliente HTTP para manejar la peticion al servidor
+
                 HttpClient httpClient = new DefaultHttpClient();
-                //Creamos objeto para armar peticion de tipo HTTP POST
+
                 HttpPost post = new HttpPost(baseUrl);
 
-                //Configuramos los parametos que vaos a enviar con la peticion HTTP POST
+
                 List<NameValuePair> nvp = new ArrayList<NameValuePair>(5);
                 nvp.add(new BasicNameValuePair("dir", obj.getString("dir")));
                 nvp.add(new BasicNameValuePair("lat", obj.getString("lat")));
@@ -366,11 +364,8 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                 nvp.add(new BasicNameValuePair("detalle", obj.getString("detalle")));
                 nvp.add(new BasicNameValuePair("mail", obj.getString("mail")));
 
-
-                // post.setHeader("Content-type", "application/json");
                 post.setEntity(new UrlEncodedFormEntity(nvp,"UTF-8"));
 
-                //Se ejecuta el envio de la peticion y se espera la respuesta de la misma.
                 HttpResponse response = httpClient.execute(post);
                 Log.w(APP_TAG, response.getStatusLine().toString());
                 int resCode = response.getStatusLine().getStatusCode();
@@ -379,7 +374,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
                   //  Toast.makeText(getContext(), "Problemas con la coneccion. Pruebe mas tarde.", Toast.LENGTH_SHORT).show();
                 }
-                //Obtengo el contenido de la respuesta en formato InputStream Buffer y la paso a formato String
+
                 in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer sb = new StringBuffer("");
                 String line = "";
@@ -404,12 +399,10 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         }
 
         protected void onProgressUpdate(Integer... progress) {
-            //Se obtiene el progreso de la peticion
             Log.w(APP_TAG,"Indicador de pregreso " + progress[0].toString());
         }
 
         protected void onPostExecute(String result) {
-            //Se obtiene el resultado de la peticion Asincrona
             Log.w(APP_TAG,"Resultado obtenido " + result);
 
 
