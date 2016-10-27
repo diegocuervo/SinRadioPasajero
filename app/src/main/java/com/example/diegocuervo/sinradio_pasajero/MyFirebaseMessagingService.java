@@ -37,23 +37,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         long[] pattern = new long[]{1000,2000,2000};
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        PendingIntent deleteIntent = PendingIntent.getActivity(this, 0, i, 0);
-        PendingIntent shareIntent = PendingIntent.getActivity(this, 0, i, 0);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
+       // PendingIntent deleteIntent = PendingIntent.getActivity(this, 0, i, 0);
+       // PendingIntent shareIntent = PendingIntent.getActivity(this, 0, i, 0);
+      //  PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
         NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
         CharSequence ticker ="El Taxi Ha Llegado!";
         CharSequence contentTitle = "El Taxi Ha Llegado!";
         CharSequence contentText = "Su chofer lo esta esperado en la direccion acordada.";
         Notification noti = new android.support.v7.app.NotificationCompat.Builder(this)
-                .setContentIntent(pendingIntent)
+            //    .setContentIntent(pendingIntent)
                 .setTicker(ticker)
                 .setContentTitle(contentTitle)
                 .setContentText(contentText)
-                .setSmallIcon(R.drawable.taxi)
+                .setSmallIcon(R.drawable.taxi_pasajero_mod)
                 .setLargeIcon((((BitmapDrawable)getResources()
-                        .getDrawable(R.drawable.iconotaxi)).getBitmap()))
-                //  .addAction(R.drawable.taxi, ticker, pendingIntent)
+                      .getDrawable(R.drawable.taxi_pasajero_mod)).getBitmap()))  // este es el de la notificacion a la derecha
+               //  .addAction(R.drawable.taxi_pasajero_modificado, ticker, pendingIntent)
 
 
                 .setSound(defaultSound)
