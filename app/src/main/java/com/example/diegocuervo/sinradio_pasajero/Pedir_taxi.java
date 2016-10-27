@@ -301,13 +301,13 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
                         JSONObject jsonObject= new JSONObject();
                         String email = Cliente_Singleton.getInstance().email;
-                        Log.w("valordeatelle", editText.toString());
+                        Log.w("valordeatelle", editText.getText().toString());
                         try {
                             jsonObject.put("dir",destino );
                             jsonObject.put("lat",latitud );
                             jsonObject.put("lon",longitud );
                             jsonObject.put("mail",email );
-                            jsonObject.put("detalle",editText.toString() );
+                            jsonObject.put("detalle", editText.getText().toString());
                         }
 
                         catch (JSONException e) {

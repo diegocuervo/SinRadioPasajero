@@ -17,6 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="410dp"
+            android:id="@+id/imagePrincipal"
+            android:src="@drawable/taxi_pasajero"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.58" />
 
     <FrameLayout
         android:id="@+id/fragment"

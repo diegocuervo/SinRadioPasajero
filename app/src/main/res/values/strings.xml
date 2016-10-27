@@ -15,7 +15,7 @@
     <string name="loading">Cargando, espere por favor</string>
     <string name="hello_world">Hello world!</string>
 
-    <string name="texto">Listado de Viajes del Dia</string>
+    <string name="texto">Listado de Viajes Realizados</string>
     <string name="posicion_actual">Posición Actual:</string>
     <string name="activar">Activar</string>
     <string name="desactivar">Desactivar</string>

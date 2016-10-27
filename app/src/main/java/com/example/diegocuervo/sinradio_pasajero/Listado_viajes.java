@@ -63,7 +63,7 @@ View vista;
                 HttpGet get = new HttpGet(baseUrl);
 
 
-              get.addHeader("mail","diegonoya93@gmail.com");
+              get.addHeader("mail",Cliente_Singleton.getInstance().email);
 
 
                 HttpResponse response = httpClient.execute(get);
@@ -116,7 +116,7 @@ View vista;
                     ArrayList<String> elementos = new ArrayList<String>();
 
                     elementos.add(jsonObject.getString("id"));
-                    elementos.add(jsonObject.getString("chofer"));
+                    elementos.add(jsonObject.getString("monto"));
                     elementos.add(jsonObject.getString("lat"));
                     elementos.add(jsonObject.getString("lon"));
                     elementos.add(jsonObject.getString("dir"));
