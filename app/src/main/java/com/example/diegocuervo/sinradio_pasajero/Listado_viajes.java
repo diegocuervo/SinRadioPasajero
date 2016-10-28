@@ -80,7 +80,8 @@ View vista;
                 return sb.toString();
 
             } catch (Exception e) {
-                return "Exception happened: " + e.getMessage();
+                return "ERROR: Verifique su coneccion a internet";
+
             } finally {
                 if (in != null) {
                     try {
@@ -99,7 +100,7 @@ View vista;
 
         protected void onPostExecute(String result) {
 
-            Toast.makeText(getActivity(),"resultado"+ result, Toast.LENGTH_LONG).show();
+
 
            try {
                 JSONArray array = new JSONArray(result);
@@ -126,7 +127,7 @@ View vista;
                 }
             }
             catch (JSONException e) {
-
+                Toast.makeText(getActivity(),result, Toast.LENGTH_LONG).show();
                 e.printStackTrace();
 
             }

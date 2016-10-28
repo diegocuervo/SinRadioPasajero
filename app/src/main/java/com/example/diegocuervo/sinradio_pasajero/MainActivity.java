@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity
     GoogleApiClient mGoogleApiClient;
     String email;
     TextView mail;
+    String name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Bundle inBundle = getIntent().getExtras();
-        String name = inBundle.get("nombre").toString();
+        name = inBundle.get("nombre").toString();
         String foto = inBundle.get("foto").toString();
         email = inBundle.get("email").toString();
 
@@ -240,10 +241,10 @@ public class MainActivity extends AppCompatActivity
                     sb.append(line + NL);
                 }
                 in.close();
-                return sb.toString();
+                return "Bienvenido "+name;
 
             } catch (Exception e) {
-                return "error" + e.getMessage();
+                return "ERROR: Verifique su coneccion a internet";
             } finally {
                 if (in != null) {
                     try {
@@ -262,7 +263,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(String result) {
 
             Log.w(APP_TAG,"Resultado obtenido token mail" + result);
-
+            Toast.makeText(actividad, result, Toast.LENGTH_SHORT).show();
 
 
         }

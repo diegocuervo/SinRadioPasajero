@@ -320,7 +320,7 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
 
                         new MyHttpPostRequestDireccion().execute(baseUrl,data);
-                        Toast.makeText(getActivity(),"En breve le notificaremos la llegada del Chofer a "+direccion,Toast.LENGTH_LONG).show();
+
                     }
                 })
                 .setNegativeButton("Cancelar",
@@ -383,10 +383,10 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                     sb.append(line + NL);
                 }
                 in.close();
-                return sb.toString();
+                return "En breve le notificaremos la llegada del chofer a :"+direccion;
 
             } catch (Exception e) {
-                return "Comienze a moverse para reportar posicion" + e.getMessage();
+                return "ERROR: Verifique su coneccion a internet";
             } finally {
                 if (in != null) {
                     try {
@@ -405,8 +405,8 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         protected void onPostExecute(String result) {
             Log.w(APP_TAG,"Resultado obtenido " + result);
 
+            Toast.makeText(getActivity(),result,Toast.LENGTH_LONG).show();
 
-          //  Toast.makeText(getContext(), result, Toast.LENGTH_SHORT).show();
 
 
         }
