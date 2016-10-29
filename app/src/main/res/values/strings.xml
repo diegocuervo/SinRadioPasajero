@@ -14,7 +14,7 @@
         <string name="btn_revoke_access">Revoke Access</string>
     <string name="loading">Cargando, espere por favor</string>
     <string name="hello_world">Hello world!</string>
-
+    <string name="str_atv_places">Enter Place Here</string>
     <string name="texto">Listado de Viajes Realizados</string>
     <string name="posicion_actual">Posición Actual:</string>
     <string name="activar">Activar</string>

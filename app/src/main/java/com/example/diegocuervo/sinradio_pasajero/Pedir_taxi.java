@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -234,28 +235,33 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                                 Geocoder geoCoder = new Geocoder(getActivity(), Locale.getDefault());
                                 try
                                 {
-                                    List<Address> addresses = geoCoder.getFromLocationName(editText.getText().toString(), 1);
+                                    List<Address> addresses = geoCoder.getFromLocationName(editText.getText().toString(), 10);
                                     if (addresses.size() > 0)
                                     {
-                                        String ciudad = addresses.get(0).getAdminArea();
-                                                String provincia =addresses.get(0).getLocality();
+                                        Integer k=0;
+                                        while(k<11) {
+                                            String ciudad = addresses.get(k).getAdminArea();
+                                            String provincia = addresses.get(k).getLocality();
 
 
-                                        if(ciudad.equals("Ciudad Autónoma de Buenos Aires") && provincia.equals("Buenos Aires")){
-                                               Double lat= addresses.get(0).getLatitude();
-                                        Double lon = addresses.get(0).getLongitude();
-                                        LatLng latLng = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                                            if (ciudad.equals("Ciudad Autónoma de Buenos Aires") && provincia.equals("Buenos Aires")) {
+                                                Double lat = addresses.get(k).getLatitude();
+                                                Double lon = addresses.get(k).getLongitude();
+                                                LatLng latLng = new LatLng(addresses.get(k).getLatitude(), addresses.get(k).getLongitude());
 
-                                        MarkerOptions markerOption = new MarkerOptions();
-                                        markerOption.position(latLng);
-                                        markerOption.title(editText.getText().toString());
-                                        googleMap.clear();
-                                        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                                        googleMap.addMarker(markerOption);
-                                        Log.d("Latitude", ""+lat);
-                                        Log.d("Longitude", ""+lon);
-                                    }
-                                        else{
+                                                MarkerOptions markerOption = new MarkerOptions();
+                                                markerOption.position(latLng);
+                                                markerOption.title(editText.getText().toString());
+                                                googleMap.clear();
+                                                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                                                googleMap.addMarker(markerOption);
+
+                                                break;
+                                            }
+
+                                            k++;
+                                        }
+                                        if(k==11){
                                             Toast.makeText(getActivity(),"La direccion ingresada no se encuentra dentro de la Ciudad Autonoma de Buenos Aires",Toast.LENGTH_LONG).show();
                                         }
                                 }
