@@ -236,19 +236,28 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                                 try
                                 {
                                     List<Address> addresses = geoCoder.getFromLocationName(editText.getText().toString(), 10);
-                                    if (addresses.size() > 0)
+                                   Integer cant_direcciones=addresses.size();
+
+
+                                    Integer k=0;
+                                    Integer l=0;
+                                    if (cant_direcciones > 0) {
+
+
+                                    while(k< cant_direcciones )
                                     {
-                                        Integer k=0;
-                                        while(k<11) {
+
+                                        l=1;
+
                                             String ciudad = addresses.get(k).getAdminArea();
                                             String provincia = addresses.get(k).getLocality();
 
 
                                             if (ciudad.equals("Ciudad Autónoma de Buenos Aires") && provincia.equals("Buenos Aires")) {
-                                                Double lat = addresses.get(k).getLatitude();
-                                                Double lon = addresses.get(k).getLongitude();
+                                                 latitud = addresses.get(k).getLatitude();
+                                                 longitud = addresses.get(k).getLongitude();
                                                 LatLng latLng = new LatLng(addresses.get(k).getLatitude(), addresses.get(k).getLongitude());
-
+                                                direccion=editText.getText().toString();
                                                 MarkerOptions markerOption = new MarkerOptions();
                                                 markerOption.position(latLng);
                                                 markerOption.title(editText.getText().toString());
@@ -261,13 +270,19 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
                                             k++;
                                         }
-                                        if(k==11){
-                                            Toast.makeText(getActivity(),"La direccion ingresada no se encuentra dentro de la Ciudad Autonoma de Buenos Aires",Toast.LENGTH_LONG).show();
-                                        }
-                                }
-                                    else{
-                                        Toast.makeText(getActivity(),"La direccion ingresada no es Valida",Toast.LENGTH_LONG).show();
                                     }
+
+
+                                        if (l==1 && cant_direcciones==k) {
+                                            Toast.makeText(getActivity(), "La direccion ingresada no se encuentra dentro de la Ciudad Autonoma de Buenos Aires", Toast.LENGTH_LONG).show();
+                                        }
+                                    if(cant_direcciones==0){
+
+                                            Toast.makeText(getActivity(), "La direccion ingresada no es Valida", Toast.LENGTH_LONG).show();
+                                        }
+
+
+
                                 }
 
                                 catch(Exception e)
