@@ -175,16 +175,20 @@ public class ValidacionPasajero extends AppCompatActivity implements
             updateUI(true);*/
             GoogleSignInAccount acct = result.getSignInAccount();
             String personName = acct.getDisplayName();
-            String personPhotoUrl = acct.getPhotoUrl().toString();
             String email = acct.getEmail();
-
-
-
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("email", email);
             intent.putExtra("nombre", personName);
-            intent.putExtra("foto", personPhotoUrl);
 
+            try {
+                String personPhotoUrl = acct.getPhotoUrl().toString();
+
+
+                intent.putExtra("foto", personPhotoUrl);
+            }
+            catch (NullPointerException e){
+            Log.w("exception","no tiene foto de gmail");
+            }
 
             startActivity(intent);
 

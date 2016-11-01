@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         Bundle inBundle = getIntent().getExtras();
         name = inBundle.get("nombre").toString();
-        String foto = inBundle.get("foto").toString();
+
         email = inBundle.get("email").toString();
 
         String baseUrl = "http://API.SIN-RADIO.COM.AR/cliente/token/"+android_id;
@@ -111,12 +111,16 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        if(foto!=null) {
+        try {
+            String foto= inBundle.get("foto").toString();
             Glide.with(getApplicationContext()).load(foto)
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imgProfilePic);
+        }
+        catch (NullPointerException e){
+
         }
 
 
@@ -181,9 +185,8 @@ public class MainActivity extends AppCompatActivity
             fragment = new Pedir_taxi();
 
         } else if (id == R.id.salir) {
-
-                moveTaskToBack(true);
-
+            moveTaskToBack(true);
+            return true;
         }
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment,fragment)
