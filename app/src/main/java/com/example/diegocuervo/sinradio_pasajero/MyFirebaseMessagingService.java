@@ -24,11 +24,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private RemoteMessage remoteMensage;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        remoteMensage = remoteMessage;
-        cuerpo = remoteMessage.getFrom();
-        from = remoteMessage.getNotification().getBody();
+       // remoteMensage = remoteMessage;
+       // cuerpo = remoteMessage.getFrom();
+       // from = remoteMessage.getNotification().getBody();
         sendNotification(remoteMessage.getNotification().getBody());
-        Log.w("FIRE BASEEE", remoteMessage.getNotification().getBody());
+        //Log.w("FIRE BASEEE", remoteMessage.getNotification().getBody());
     }
     private void sendNotification(String messageBody) {
         int notificationID = 1;

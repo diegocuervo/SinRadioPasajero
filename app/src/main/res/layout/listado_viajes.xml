@@ -27,7 +27,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:id="@+id/layoutTabla"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginBottom="0dp">
 
         <ScrollView
             android:id="@+id/scrollvertical"
