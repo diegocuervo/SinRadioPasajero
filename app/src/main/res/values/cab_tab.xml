@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="cab_tab">
-        <item>ID Viaje</item>
-        <item>ID Cliente</item>
-        <item>Origen</item>
-        <item>Destino</item>
+        <item>Nro Viaje</item>
+        <item>Direccion</item>
+        <item>Fecha</item>
+        <item>Detalle</item>
+        <item>Chofer</item>
         <item>Monto</item>
     </string-array>
 </resources>

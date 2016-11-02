@@ -64,7 +64,8 @@ public class Tabla {
         TableRow.LayoutParams layoutFila = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
         fila.setLayoutParams(layoutFila);
 
-        String[] arraycabecera = rs.getStringArray(R.array.cab_tab);
+        String[] arraycabecera = rs.getStringArray((R.array.cab_tab));
+
         COLUMNAS = arraycabecera.length;
 
         for (int i = 0; i < arraycabecera.length; i++) {
@@ -141,85 +142,85 @@ public class Tabla {
 
 
 
-private class MyHttpPostRequest extends AsyncTask<String, Integer, String> {
+    private class MyHttpPostRequest extends AsyncTask<String, Integer, String> {
 
-    public String APP_TAG = "ECTUploadData";
-    protected String doInBackground(String... params) {
-        BufferedReader in = null;
-        String baseUrl = params[0];
-        String jsonData = params[1];
+        public String APP_TAG = "ECTUploadData";
+        protected String doInBackground(String... params) {
+            BufferedReader in = null;
+            String baseUrl = params[0];
+            String jsonData = params[1];
 
-        try {
-            //Creamos un objeto Cliente HTTP para manejar la peticion al servidor
-            HttpClient httpClient = new DefaultHttpClient();
-            //Creamos objeto para armar peticion de tipo HTTP POST
-            HttpPost post = new HttpPost(baseUrl);
+            try {
+                //Creamos un objeto Cliente HTTP para manejar la peticion al servidor
+                HttpClient httpClient = new DefaultHttpClient();
+                //Creamos objeto para armar peticion de tipo HTTP POST
+                HttpPost post = new HttpPost(baseUrl);
 
-            //Configuramos los parametos que vaos a enviar con la peticion HTTP POST
-           List<NameValuePair> nvp = new ArrayList<NameValuePair>(3);
-            nvp.add(new BasicNameValuePair("evento", "ingresomonto"));
-            nvp.add(new BasicNameValuePair("monto", "456.52"));
-            nvp.add(new BasicNameValuePair("id_viaje","4353" ));
+                //Configuramos los parametos que vaos a enviar con la peticion HTTP POST
+                List<NameValuePair> nvp = new ArrayList<NameValuePair>(3);
+                nvp.add(new BasicNameValuePair("evento", "ingresomonto"));
+                nvp.add(new BasicNameValuePair("monto", "456.52"));
+                nvp.add(new BasicNameValuePair("id_viaje","4353" ));
 
-           // post.setHeader("Content-type", "application/json");
-            post.setEntity(new UrlEncodedFormEntity(nvp,"UTF-8"));
+                // post.setHeader("Content-type", "application/json");
+                post.setEntity(new UrlEncodedFormEntity(nvp,"UTF-8"));
 
-            //Se ejecuta el envio de la peticion y se espera la respuesta de la misma.
-            HttpResponse response = httpClient.execute(post);
-            Log.w(APP_TAG, response.getStatusLine().toString());
+                //Se ejecuta el envio de la peticion y se espera la respuesta de la misma.
+                HttpResponse response = httpClient.execute(post);
+                Log.w(APP_TAG, response.getStatusLine().toString());
 
-            //Obtengo el contenido de la respuesta en formato InputStream Buffer y la paso a formato String
-            in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            StringBuffer sb = new StringBuffer("");
-            String line = "";
-            String NL = System.getProperty("line.separator");
-            while ((line = in.readLine()) != null) {
-                sb.append(line + NL);
-            }
-            in.close();
-            return sb.toString();
+                //Obtengo el contenido de la respuesta en formato InputStream Buffer y la paso a formato String
+                in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuffer sb = new StringBuffer("");
+                String line = "";
+                String NL = System.getProperty("line.separator");
+                while ((line = in.readLine()) != null) {
+                    sb.append(line + NL);
+                }
+                in.close();
+                return sb.toString();
 
-        } catch (Exception e) {
-            return "Exception happened: " + e.getMessage();
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            } catch (Exception e) {
+                return "Exception happened: " + e.getMessage();
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
-    }
 
-    protected void onProgressUpdate(Integer... progress) {
-        //Se obtiene el progreso de la peticion
-        Log.w(APP_TAG,"Indicador de pregreso " + progress[0].toString());
-    }
-
-    protected void onPostExecute(String result) {
-
-        Log.w(APP_TAG,"Resultado obtenido " + result);
-        try {
-           JSONArray array = new JSONArray(result);
-
-            JSONObject jsonObject = array.getJSONObject(0);
-
-
-            Log.w(APP_TAG,"Anduvo el parseo puto? " + jsonObject.getString("apellido"));
-            Toast.makeText(actividad, jsonObject.getString("apellido"), Toast.LENGTH_SHORT).show();
-        }
-        catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-
+        protected void onProgressUpdate(Integer... progress) {
+            //Se obtiene el progreso de la peticion
+            Log.w(APP_TAG,"Indicador de pregreso " + progress[0].toString());
         }
 
-       Toast.makeText(actividad, result, Toast.LENGTH_SHORT).show();
+        protected void onPostExecute(String result) {
 
+            Log.w(APP_TAG,"Resultado obtenido " + result);
+            try {
+                JSONArray array = new JSONArray(result);
+
+                JSONObject jsonObject = array.getJSONObject(0);
+
+
+                Log.w(APP_TAG,"Anduvo el parseo puto? " + jsonObject.getString("apellido"));
+                Toast.makeText(actividad, jsonObject.getString("apellido"), Toast.LENGTH_SHORT).show();
+            }
+            catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+
+            }
+
+            Toast.makeText(actividad, result, Toast.LENGTH_SHORT).show();
+
+
+        }
 
     }
-
-}
 }
 

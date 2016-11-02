@@ -102,25 +102,26 @@ View vista;
 
 
 
-           try {
+            try {
                 JSONArray array = new JSONArray(result);
                 Integer cantidad = array.length();
-               Log.w(APP_TAG, "Resultado obtenido " + result + cantidad);
+                Log.w(APP_TAG, "Resultado obtenido " + result + cantidad);
                 Integer k=0;
                 Tabla tabla = new Tabla(getActivity(), (TableLayout) vista.findViewById(R.id.tabla));
-               tabla.agregarCabecera();
+                tabla.agregarCabecera();
 
-               while(k<cantidad){
-                   JSONObject jsonObject = array.getJSONObject(k);
+                while(k<cantidad){
+                    JSONObject jsonObject = array.getJSONObject(k);
 
 
                     ArrayList<String> elementos = new ArrayList<String>();
 
                     elementos.add(jsonObject.getString("id"));
-                    elementos.add(jsonObject.getString("monto"));
-                    elementos.add(jsonObject.getString("lat"));
-                    elementos.add(jsonObject.getString("lon"));
                     elementos.add(jsonObject.getString("dir"));
+                    elementos.add(jsonObject.getString("fecha"));
+                    elementos.add(jsonObject.getString("detalle"));
+                    elementos.add(jsonObject.getString("chofer"));
+                    elementos.add(jsonObject.getString("monto"));
                     tabla.agregarFilaTabla(elementos);
                     k++;
 
@@ -131,6 +132,7 @@ View vista;
                 e.printStackTrace();
 
             }
+
 
         }
 
