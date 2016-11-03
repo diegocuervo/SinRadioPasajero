@@ -159,31 +159,51 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
 
+
+/*
             LocationManager locationManager = (LocationManager)
                     getActivity().getSystemService(Context.LOCATION_SERVICE);
             Criteria criteria = new Criteria();
             Location location = locationManager.getLastKnownLocation(locationManager
                     .getBestProvider(criteria, false));
+*/
+            GPSTracker gps = new GPSTracker(getActivity());
+
+            // check if GPS enabled
+            if(gps.canGetLocation()){
+
+                double lati = gps.getLatitude();
+                double longi = gps.getLongitude();
+                LatLng latlon = new LatLng(lati,longi);
+                Log.w("direccion", "cayo en al escepcion"+longi);
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latlon);
+                Geocoder geoco = new Geocoder(getActivity(), Locale.getDefault());
+                List<Address> direccionesActual;
+
+                direccionesActual = geoco.getFromLocation(latlon.latitude, latlon.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+                String address = direccionesActual.get(0).getAddressLine(0);
+                String posactual =address;
+                Log.w("direccion", address);
+                direccion =address;
+                Log.w("direccion", String.valueOf(latlon.longitude));
+                markerOptions.title(posactual);
+                googleMap.clear();
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latlon));
+                googleMap.addMarker(markerOptions);
+                // \n is for new line
+             //   Toast.makeText(getContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+            }else{
+                // can't get location
+                // GPS or Network is not enabled
+                // Ask user to enable GPS/network in settings
+                gps.showSettingsAlert();
+            }
 
 
-            LatLng latlon = new LatLng(location.getLatitude(),location.getLongitude());
-            Log.w("direccion", "cayo en al escepcion"+location.getLatitude());
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(latlon);
-            Geocoder geoco = new Geocoder(getActivity(), Locale.getDefault());
-            List<Address> direccionesActual;
 
-            direccionesActual = geoco.getFromLocation(latlon.latitude, latlon.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
-            String address = direccionesActual.get(0).getAddressLine(0);
-            String posactual =address;
-            Log.w("direccion", address);
-            direccion =address;
-            Log.w("direccion", String.valueOf(latlon.longitude));
-            markerOptions.title(posactual);
-            googleMap.clear();
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latlon));
-            googleMap.addMarker(markerOptions);
         } catch (Exception e) {
             e.printStackTrace();
             Log.w("direccion", "cayo en al escepcion"+direccion);

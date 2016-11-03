@@ -32,8 +32,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
     private void sendNotification(String messageBody) {
         int notificationID = 1;
-        Intent i = new Intent(this, NotificationView.class);
-        i.putExtra("notificationID", notificationID);
+        //Intent i = new Intent(this, NotificationView.class);
+      //  i.putExtra("notificationID", notificationID);
         long[] pattern = new long[]{1000,2000,2000};
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
