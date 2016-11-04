@@ -20,9 +20,9 @@
     <Button
         android:id="@+id/btnPedir_taxi_manual"
 
-        android:layout_width="200dp"
+        android:layout_width="170dp"
         android:layout_height="50dp"
-        android:text="Indicar Direccion Manualmente"
+        android:text="Indicar Direccion"
         android:layout_marginLeft="175dp"
         android:layout_marginTop="-60dp"
         android:onClick="btnPedir_taxi_manual"></Button>
