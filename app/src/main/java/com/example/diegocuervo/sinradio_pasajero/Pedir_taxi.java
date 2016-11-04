@@ -172,10 +172,10 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
             // check if GPS enabled
             if(gps.canGetLocation()){
 
-                double lati = gps.getLatitude();
-                double longi = gps.getLongitude();
-                LatLng latlon = new LatLng(lati,longi);
-                Log.w("direccion", "cayo en al escepcion"+longi);
+                latitud = gps.getLatitude();
+                longitud= gps.getLongitude();
+                LatLng latlon = new LatLng(latitud,longitud);
+                Log.w("direccion", "cayo en al escepcion"+latitud);
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latlon);
                 Geocoder geoco = new Geocoder(getActivity(), Locale.getDefault());
