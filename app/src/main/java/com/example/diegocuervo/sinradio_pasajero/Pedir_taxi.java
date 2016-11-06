@@ -160,16 +160,9 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
             MapsInitializer.initialize(getActivity().getApplicationContext());
 
 
-/*
-            LocationManager locationManager = (LocationManager)
-                    getActivity().getSystemService(Context.LOCATION_SERVICE);
-            Criteria criteria = new Criteria();
-            Location location = locationManager.getLastKnownLocation(locationManager
-                    .getBestProvider(criteria, false));
-*/
             GPSTracker gps = new GPSTracker(getActivity());
 
-            // check if GPS enabled
+
             if(gps.canGetLocation()){
 
                 latitud = gps.getLatitude();
@@ -192,12 +185,9 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                 googleMap.clear();
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latlon));
                 googleMap.addMarker(markerOptions);
-                // \n is for new line
-             //   Toast.makeText(getContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+
             }else{
-                // can't get location
-                // GPS or Network is not enabled
-                // Ask user to enable GPS/network in settings
+
                 gps.showSettingsAlert();
             }
 
@@ -410,11 +400,6 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                 HttpResponse response = httpClient.execute(post);
                 Log.w(APP_TAG, response.getStatusLine().toString());
                 int resCode = response.getStatusLine().getStatusCode();
-
-                if(resCode==404 || resCode==410){
-
-                  //  Toast.makeText(getContext(), "Problemas con la coneccion. Pruebe mas tarde.", Toast.LENGTH_SHORT).show();
-                }
 
                 in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
                 StringBuffer sb = new StringBuffer("");
