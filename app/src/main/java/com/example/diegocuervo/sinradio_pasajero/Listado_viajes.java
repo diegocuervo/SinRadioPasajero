@@ -118,7 +118,7 @@ View vista;
 
                     elementos.add(jsonObject.getString("id"));
                     elementos.add(jsonObject.getString("dir"));
-                    elementos.add(jsonObject.getString("fecha"));
+                    elementos.add(jsonObject.getString("fecha").substring(0,10)+" "+jsonObject.getString("fecha").substring(11,19));
                     elementos.add(jsonObject.getString("detalle"));
                     elementos.add(jsonObject.getString("chofer"));
                     elementos.add(jsonObject.getString("monto"));
