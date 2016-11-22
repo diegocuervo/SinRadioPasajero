@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="440dp" />
+        android:layout_height="match_parent"/>
     <Button
         android:id="@+id/btnpedir_taxi"
 
-        android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Enviar Posicion"
 
-        android:layout_margin="10dp"
+        app:layout_marginTopPercent="90%"
+        app:layout_marginLeftPercent="2%"
         android:onClick="btnPedir_taxi"></Button>
     <Button
         android:id="@+id/btnPedir_taxi_manual"
 
-        android:layout_width="170dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Indicar Direccion"
-        android:layout_marginLeft="175dp"
-        android:layout_marginTop="-60dp"
+        app:layout_marginTopPercent="90%"
+        app:layout_marginLeftPercent="42%"
         android:onClick="btnPedir_taxi_manual"></Button>
-</LinearLayout>
+</android.support.percent.PercentRelativeLayout>
