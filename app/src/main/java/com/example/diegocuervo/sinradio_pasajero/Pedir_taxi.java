@@ -114,11 +114,12 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
 
                     @Override
                     public void onMapClick(LatLng arg0) {
+                        try {
                         Geocoder geocoder;
                         List<Address> addresses;
                         geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
-                        try {
+
                             addresses = geocoder.getFromLocation(arg0.latitude, arg0.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
 
@@ -142,7 +143,8 @@ public class Pedir_taxi extends Fragment implements OnMapReadyCallback {
                             else {
                                 Toast.makeText(getActivity(),"La direccion elegida no pertenece a la Ciudad Autonoma de Buenos Aires",Toast.LENGTH_LONG).show();
                             }
-                        } catch (IOException e) {
+                        } catch (Exception e) {
+                            Log.w("click en mapita","Entro en la excepcion :( ");
                             e.printStackTrace();
                         }
                     }

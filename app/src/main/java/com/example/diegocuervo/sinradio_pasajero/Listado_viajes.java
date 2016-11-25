@@ -121,7 +121,13 @@ View vista;
                     elementos.add(jsonObject.getString("fecha").substring(0,10)+" "+jsonObject.getString("fecha").substring(11,19));
                     elementos.add(jsonObject.getString("detalle"));
                     elementos.add(jsonObject.getString("chofer"));
-                    elementos.add(jsonObject.getString("monto"));
+
+                    if(jsonObject.getString("monto").equalsIgnoreCase("null")) {
+                        elementos.add(" ");
+                    }
+                    else{
+                        elementos.add(jsonObject.getString("monto"));
+                    }
                     tabla.agregarFilaTabla(elementos);
                     k++;
 
